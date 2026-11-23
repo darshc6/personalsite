@@ -53,12 +53,6 @@
       line-height: 1.1;
       letter-spacing: -0.035em;
       color: #ffe5ad;
-      text-shadow:
-        0 0 2px #fff5dc,
-        0 0 7px #ffc163,
-        0 0 18px #f79b32,
-        0 0 42px #f68d2180,
-        0 0 90px #d9791833;
       transform: rotate(-5deg);
       transform-origin: left center;
     }
@@ -71,10 +65,17 @@
       color: inherit;
       font: inherit;
       letter-spacing: inherit;
-      text-shadow: inherit;
+      text-shadow:
+        0 0 2px #fff5dc,
+        0 0 7px #ffc163,
+        0 0 18px #f79b32,
+        0 0 42px #f68d2180,
+        0 0 90px #d9791833,
+        var(--shadow-x, 0px) var(--shadow-y, 12px) 2px #163a51,
+        var(--shadow-x, 0px) var(--shadow-y, 12px) 26px #3b83ac66;
       cursor: pointer;
-      transform: perspective(700px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
-      transition: transform 160ms ease-out, filter 180ms ease-out, color 180ms ease-out, text-shadow 180ms ease-out;
+      transform: perspective(700px) translate3d(var(--move-x, 0px), var(--move-y, 0px), 0) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
+      transition: transform 110ms ease-out, filter 180ms ease-out, color 180ms ease-out, text-shadow 110ms ease-out;
       -webkit-tap-highlight-color: transparent;
     }
 
@@ -97,7 +98,7 @@
     }
 
     .aside {
-      max-width: 36ch;
+      max-width: 100%;
       margin: 0;
       color: #b5b2aa;
       font-size: 1rem;
@@ -116,92 +117,281 @@
 
     footer p { margin: 0; }
 
-    .coffee-corner { position: relative; margin-left: auto; }
-    .coffee-corner summary {
-      display: flex;
-      align-items: center;
-      gap: 0.8rem;
-      width: fit-content;
-      padding: 0.5rem 0;
-      color: #c7baa1;
-      list-style: none;
+    .coffee-corner {
+      position: fixed;
+      right: clamp(1.5rem, 5vw, 4.5rem);
+      bottom: clamp(1.5rem, 5vw, 4.5rem);
+      z-index: 2;
+      display: block;
+      width: clamp(10rem, 18vw, 14rem);
+      padding: 0;
+      border: 1px solid #98acac4d;
+      border-radius: 50%;
+      background: #12212a;
+      box-shadow: 0 16px 28px #0007, 0 0 30px #6e9dba15;
       cursor: pointer;
+      transform: scale(var(--orb-scale, 1));
+      transform-origin: right bottom;
+      transition: transform 600ms cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 600ms ease;
     }
-    .coffee-corner summary::-webkit-details-marker { display: none; }
-    .coffee-corner summary:focus-visible { outline: 1px dashed #ffc163; outline-offset: 6px; }
-    .small-cup {
-      position: relative;
-      width: 1.25rem;
-      height: 1rem;
-      border: 1px solid #ffc163;
-      border-radius: 0 0 5px 5px;
-      box-shadow: 0 0 8px #f79b3230;
-    }
-    .small-cup::after {
+
+    .coffee-corner::before, .coffee-corner::after {
       content: '';
       position: absolute;
-      width: 0.5rem;
-      height: 0.6rem;
-      top: 1px;
-      right: -0.5rem;
-      border: 1px solid #ffc163;
-      border-radius: 0 50% 50% 0;
+      inset: 0;
+      z-index: 2;
+      pointer-events: none;
+      border-radius: inherit;
     }
-    .coffee-panel {
-      position: absolute;
-      right: 0;
-      bottom: calc(100% + 1rem);
-      z-index: 5;
-      width: min(25rem, calc(100vw - 3rem));
-      max-height: 75svh;
-      overflow: auto;
-      border: 1px solid #655d49;
-      background: #101a21;
-      box-shadow: 0 1rem 4rem #0009;
+
+    .coffee-corner::before {
+      background:
+        radial-gradient(ellipse at 28% 18%, #f5f7e966, transparent 22%),
+        radial-gradient(ellipse at 90% 80%, #7bb4e42e, transparent 45%);
+      box-shadow: inset -16px -20px 30px #000a, inset 7px 9px 15px #d1dacc26, inset 0 0 5px #e2f2e566;
     }
-    .coffee-panel-header { display: flex; justify-content: space-between; align-items: center; padding: 1rem 1.2rem; }
-    .coffee-panel h2 { margin: 0; font: italic 1.25rem Georgia, serif; color: #ede4d5; }
-    .coffee-close { border: 0; background: transparent; color: #b5b2aa; font: 1.5rem/1 monospace; cursor: pointer; padding: 0.25rem; }
+
+    .coffee-corner::after {
+      background: linear-gradient(125deg, transparent 16%, #f6f9e14d 24%, transparent 40%);
+      opacity: calc(0.22 + var(--orb-nearness, 0) * 0.65);
+      transform: rotate(var(--orb-reflection, -12deg));
+      transition: opacity 400ms ease, transform 600ms ease;
+    }
+
+    .coffee-corner:is(:hover, :focus-visible, [aria-pressed="true"]) {
+      transform: scale(1.52);
+      box-shadow: 0 20px 38px #0009, 0 0 45px #9fbfd333, 0 0 80px #c69a5d12;
+    }
+
+    .coffee-corner:focus-visible {
+      outline: 1px dashed #ffc163;
+      outline-offset: 6px;
+    }
+
     .coffee-scene {
       position: relative;
-      height: 13rem;
+      display: block;
+      aspect-ratio: 1;
+      border-radius: 50%;
       overflow: hidden;
       background:
+        radial-gradient(ellipse at 20% 35%, #c28b311f, transparent 50%),
         linear-gradient(#263d46 1px, transparent 1px),
         linear-gradient(90deg, #263d46 1px, transparent 1px), #152a33;
-      background-size: 3rem 2rem;
-      border-block: 1px solid #38494c;
+      background-size: auto, 2.7rem 1.8rem, 2.7rem 1.8rem;
+      font-size: clamp(12px, 1.1vw, 16px);
     }
-    .cafe-sign { position: absolute; left: 8%; top: 12%; font: 1.2rem Georgia, serif; letter-spacing: 0.16em; color: #ffe5ad; text-shadow: 0 0 4px #ffc163, 0 0 15px #f79b3280; }
-    .machine { position: absolute; right: 9%; bottom: 30%; width: 39%; height: 43%; border: 3px solid #777d78; border-radius: 5px 5px 0 0; background: linear-gradient(90deg, #929a90, #b0b4a0 50%, #74847f); box-shadow: 4px 4px #0a161f; }
-    .machine::before { content: ''; position: absolute; inset: 9% 9% 42%; border: 1px solid #4a5753; background: #25362f; }
-    .machine::after { content: ''; position: absolute; width: 1.2rem; height: 1.2rem; right: 16%; top: 16%; border: 3px solid #bfc0a7; border-radius: 50%; background: linear-gradient(45deg, #e6dab8 45%, #383e31 46% 53%, #e6dab8 54%); }
-    .portafilter { position: absolute; left: 17%; top: 67%; width: 55%; height: 0.45rem; background: #23352e; box-shadow: 0 4px #66756d; }
-    .portafilter::before { content: ''; position: absolute; bottom: 100%; width: 35%; height: 0.7rem; background: #c2bfa5; }
-    .counter { position: absolute; inset: auto 0 23%; height: 10%; border-top: 4px solid #c69a5d; background: repeating-linear-gradient(0deg, #795136 0 3px, #6d472f 3px 5px); box-shadow: 0 4px 8px #0005; }
-    .cafe-floor { position: absolute; inset: 77% 0 0; background: conic-gradient(#b3ad8b 25%, #263e42 0 50%, #b3ad8b 0 75%, #263e42 0) 0 0 / 2.4rem 2.4rem; opacity: 0.5; }
-    .coffee-cup { position: absolute; left: 23%; bottom: 32%; width: 3.3rem; height: 2.5rem; border: 3px solid #e8d9b4; border-radius: 2px 2px 14px 14px; background: #b8b99d; box-shadow: inset -8px 0 #8b9c8f, 0 8px 0 -4px #d2c49d; }
-    .coffee-cup::after { content: ''; position: absolute; left: 100%; top: 2px; width: 1.2rem; height: 1.4rem; border: 4px solid #e8d9b4; border-radius: 0 60% 60% 0; }
-    .coffee-cup::before { content: ''; position: absolute; left: 2px; right: 2px; top: 0; height: 0.35rem; border-radius: 50%; background: #454e41; }
-    .steam { position: absolute; left: 22%; bottom: calc(100% + 8px); width: 0.55rem; height: 1.8rem; border-left: 2px solid #d1d9c2; border-radius: 50%; opacity: 0; transform: rotate(12deg); }
-    .steam::after { content: ''; position: absolute; left: 0.9rem; top: -0.3rem; width: 0.55rem; height: 1.8rem; border-left: 2px solid #d1d9c2; border-radius: 50%; }
-    .brewed .steam { opacity: 0.65; }
-    .brewed .coffee-cup::before { background: #6b3b1d; box-shadow: inset 0 1px #c79858; }
-    .coffee-controls { padding: 1.1rem 1.2rem; }
-    .brew { padding: 0.55rem 0.8rem; border: 1px solid #aa8758; background: #d1af78; color: #1c241e; font: bold 0.875rem 'Courier New', monospace; cursor: pointer; }
-    .brew:focus-visible, .coffee-close:focus-visible { outline: 2px solid #b5cfe8; outline-offset: 4px; }
-    .brew:disabled { background: #26382f; color: #c5d4bb; border-color: #506554; cursor: default; }
-    .coffee-status { margin: 0.75rem 0 0; min-height: 1.5em; font-size: 0.875rem; color: #b8b7aa; }
+
+    .cafe-lamp {
+      position: absolute;
+      top: 0;
+      left: 15%;
+      width: 21%;
+      height: 28%;
+      border-top: 0;
+    }
+
+    .cafe-lamp::before {
+      content: '';
+      position: absolute;
+      width: 1px;
+      height: 70%;
+      left: 50%;
+      background: #9a8560;
+    }
+
+    .cafe-lamp::after {
+      content: '';
+      position: absolute;
+      inset: 60% 0 0;
+      border-bottom: 2px solid #ffe5ad;
+      background: #b28243;
+      clip-path: polygon(30% 0, 70% 0, 100% 100%, 0 100%);
+    }
+
+    .machine {
+      position: absolute;
+      right: 10%;
+      bottom: 43%;
+      width: 40%;
+      height: 41%;
+      border: 3px solid #777d78;
+      border-radius: 5px 5px 0 0;
+      background: linear-gradient(90deg, #929a90, #b0b4a0 50%, #74847f);
+      box-shadow: 4px 4px #0a161f;
+    }
+
+    .machine::before {
+      content: '';
+      position: absolute;
+      inset: 9% 9% 42%;
+      border: 1px solid #4a5753;
+      background: #25362f;
+    }
+
+    .machine::after {
+      content: '';
+      position: absolute;
+      width: 17%;
+      aspect-ratio: 1;
+      right: 16%;
+      top: 16%;
+      border: 2px solid #bfc0a7;
+      border-radius: 50%;
+      background: linear-gradient(45deg, #e6dab8 45%, #383e31 46% 53%, #e6dab8 54%);
+    }
+
+    .portafilter {
+      position: absolute;
+      left: 17%;
+      top: 67%;
+      width: 55%;
+      height: 8%;
+      background: #23352e;
+      box-shadow: 0 3px #66756d;
+    }
+
+    .portafilter::before {
+      content: '';
+      position: absolute;
+      bottom: 100%;
+      width: 35%;
+      height: 150%;
+      background: #c2bfa5;
+    }
+
+    .counter {
+      position: absolute;
+      inset: auto 0 23%;
+      height: 10%;
+      border-top: 4px solid #c69a5d;
+      background: repeating-linear-gradient(0deg, #795136 0 3px, #6d472f 3px 5px);
+      box-shadow: 0 4px 8px #0005;
+    }
+
+    .cafe-floor {
+      position: absolute;
+      inset: 77% 0 0;
+      background: conic-gradient(#b3ad8b 25%, #263e42 0 50%, #b3ad8b 0 75%, #263e42 0) 0 0 / 2rem 2rem;
+      opacity: 0.5;
+    }
+
+    .coffee-cup {
+      position: absolute;
+      left: 53%;
+      bottom: 32%;
+      width: 17%;
+      height: 18%;
+      border: 3px solid #e8d9b4;
+      border-radius: 2px 2px 12px 12px;
+      background: #b8b99d;
+      box-shadow: inset -6px 0 #8b9c8f, 0 7px 0 -4px #d2c49d;
+    }
+
+    .coffee-cup::after {
+      content: '';
+      position: absolute;
+      left: 100%;
+      top: 2px;
+      width: 40%;
+      height: 65%;
+      border: 3px solid #e8d9b4;
+      border-radius: 0 60% 60% 0;
+    }
+
+    .coffee-cup::before {
+      content: '';
+      position: absolute;
+      left: 2px;
+      right: 2px;
+      top: 0;
+      height: 15%;
+      border-radius: 50%;
+      background: #454e41;
+      transition: background 500ms 500ms;
+    }
+
+    .pour {
+      position: absolute;
+      left: 60%;
+      top: 46%;
+      width: 2px;
+      height: 8%;
+      background: #8f542c;
+      transform-origin: top;
+      opacity: 0;
+    }
+
+    .steam {
+      position: absolute;
+      left: 22%;
+      bottom: calc(100% + 5px);
+      width: 0.5em;
+      height: 1.7em;
+      border-left: 2px solid #d1d9c2;
+      border-radius: 50%;
+      opacity: 0;
+    }
+
+    .steam::after {
+      content: '';
+      position: absolute;
+      left: 0.8em;
+      top: -0.3em;
+      width: 0.5em;
+      height: 1.7em;
+      border-left: 2px solid #d1d9c2;
+      border-radius: 50%;
+    }
+
+    .coffee-corner:is(:hover, :focus-visible, [aria-pressed="true"], .is-near) .steam {
+      animation: steam-rise 2.4s 750ms ease-out infinite;
+    }
+
+    .coffee-corner:is(:hover, :focus-visible, [aria-pressed="true"], .is-near) .pour {
+      animation: espresso-pour 4s 350ms ease-in-out infinite;
+    }
+
+    .coffee-corner:is(:hover, :focus-visible, [aria-pressed="true"], .is-near) .machine::after {
+      animation: pressure-gauge 4s ease-in-out infinite;
+    }
+
+    .coffee-corner:is(:hover, :focus-visible, [aria-pressed="true"], .is-near) .coffee-cup::before {
+      background: #6b3b1d;
+      box-shadow: inset 0 1px #c79858;
+    }
+
+    @keyframes steam-rise {
+      0% { opacity: 0; transform: translateY(5px) rotate(-8deg); }
+      35% { opacity: 0.65; }
+      100% { opacity: 0; transform: translateY(-22px) rotate(10deg); }
+    }
+
+    @keyframes espresso-pour {
+      0%, 80%, 100% { opacity: 0; transform: scaleY(0); }
+      15%, 65% { opacity: 0.9; transform: scaleY(1); }
+    }
+
+    @keyframes pressure-gauge {
+      0%, 100% { transform: rotate(-15deg); }
+      40%, 70% { transform: rotate(35deg); }
+    }
 
     @media (max-width: 40rem) {
       main { padding: 5rem 0 6rem; }
       h1 { font-size: clamp(4.5rem, 20vw, 8rem); }
-      .aside { max-width: 28ch; }
-      footer { align-items: flex-start; }
+      footer { padding-bottom: 8rem; }
+      .coffee-corner { width: 10rem; }
     }
 
     @media (prefers-reduced-motion: reduce) {
       .neon { transform: none; transition: none; }
+      .coffee-corner, .coffee-corner:is(:hover, :focus-visible, [aria-pressed="true"]) { transform: none; transition: none; }
+      .coffee-corner::after { transition: none; }
+      .coffee-corner:is(:hover, :focus-visible, [aria-pressed="true"], .is-near) :is(.steam, .pour),
+      .coffee-corner:is(:hover, :focus-visible, [aria-pressed="true"], .is-near) .machine::after { animation: none; }
+      .coffee-corner:is(:hover, :focus-visible, [aria-pressed="true"]) .steam { opacity: 0.6; }
+      .coffee-corner:is(:hover, :focus-visible, [aria-pressed="true"]) .pour { opacity: 0.9; }
     }
   </style>
 </head>
@@ -215,42 +405,55 @@
     </main>
     <footer>
       <p>more soon. probably.</p>
-      <details class="coffee-corner">
-        <summary><span class="small-cup" aria-hidden="true"></span>coffee corner</summary>
-        <section class="coffee-panel" aria-label="Coffee corner">
-          <div class="coffee-panel-header">
-            <h2>a little coffee break.</h2>
-            <button class="coffee-close" type="button" aria-label="Close coffee corner">×</button>
-          </div>
-          <div class="coffee-scene" aria-hidden="true">
-            <span class="cafe-sign">COFFEE</span>
-            <div class="machine"><span class="portafilter"></span></div>
-            <div class="cafe-floor"></div>
-            <div class="counter"></div>
-            <div class="coffee-cup"><span class="steam"></span></div>
-          </div>
-          <div class="coffee-controls">
-            <button class="brew" type="button">Brew a coffee</button>
-            <p class="coffee-status" role="status">pull up a stool.</p>
-          </div>
-        </section>
-      </details>
+      <button class="coffee-corner" type="button" aria-label="Animate the coffee corner" aria-pressed="false">
+        <span class="coffee-scene" aria-hidden="true">
+          <span class="cafe-lamp"></span>
+          <span class="machine"><span class="portafilter"></span></span>
+          <span class="cafe-floor"></span>
+          <span class="counter"></span>
+          <span class="pour"></span>
+          <span class="coffee-cup"><span class="steam"></span></span>
+        </span>
+      </button>
     </footer>
   </div>
   <script>
     const neon = document.querySelector('.neon');
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
-    neon.addEventListener('pointermove', (event) => {
-      const bounds = neon.getBoundingClientRect();
-      const horizontal = (event.clientX - bounds.left) / bounds.width - 0.5;
-      const vertical = (event.clientY - bounds.top) / bounds.height - 0.5;
-      neon.style.setProperty('--tilt-x', `${-vertical * 8}deg`);
-      neon.style.setProperty('--tilt-y', `${horizontal * 8}deg`);
+    document.addEventListener('pointermove', (event) => {
+      if (event.pointerType === 'touch' || reducedMotion.matches) return;
+      const horizontal = event.clientX / window.innerWidth - 0.5;
+      const vertical = event.clientY / window.innerHeight - 0.5;
+      neon.style.setProperty('--move-x', `${horizontal * 64}px`);
+      neon.style.setProperty('--move-y', `${vertical * 44}px`);
+      neon.style.setProperty('--tilt-x', `${-vertical * 24}deg`);
+      neon.style.setProperty('--tilt-y', `${horizontal * 28}deg`);
+      neon.style.setProperty('--shadow-x', `${-horizontal * 56}px`);
+      neon.style.setProperty('--shadow-y', `${12 - vertical * 40}px`);
+
+      const centerX = coffeeCorner.offsetLeft + coffeeCorner.offsetWidth / 2;
+      const centerY = coffeeCorner.offsetTop + coffeeCorner.offsetHeight / 2;
+      const distance = Math.hypot(event.clientX - centerX, event.clientY - centerY);
+      const proximity = Math.max(0, 1 - distance / 450);
+      const nearness = proximity * proximity;
+      coffeeCorner.style.setProperty('--orb-scale', String(1 + nearness * 0.52));
+      coffeeCorner.style.setProperty('--orb-nearness', String(nearness));
+      coffeeCorner.style.setProperty('--orb-reflection', `${-12 + horizontal * 40}deg`);
+      coffeeCorner.classList.toggle('is-near', proximity > 0.55);
     });
 
-    neon.addEventListener('pointerleave', () => {
+    document.documentElement.addEventListener('pointerleave', () => {
+      neon.style.removeProperty('--move-x');
+      neon.style.removeProperty('--move-y');
       neon.style.removeProperty('--tilt-x');
       neon.style.removeProperty('--tilt-y');
+      neon.style.removeProperty('--shadow-x');
+      neon.style.removeProperty('--shadow-y');
+      coffeeCorner.style.removeProperty('--orb-scale');
+      coffeeCorner.style.removeProperty('--orb-nearness');
+      coffeeCorner.style.removeProperty('--orb-reflection');
+      coffeeCorner.classList.remove('is-near');
     });
 
     neon.addEventListener('click', () => {
@@ -260,27 +463,17 @@
     });
 
     const coffeeCorner = document.querySelector('.coffee-corner');
-    const coffeeSummary = coffeeCorner.querySelector('summary');
-    const closeCoffee = document.querySelector('.coffee-close');
-    const brewCoffee = document.querySelector('.brew');
 
-    closeCoffee.addEventListener('click', () => {
-      coffeeCorner.open = false;
-      coffeeSummary.focus();
+    coffeeCorner.addEventListener('click', () => {
+      const isPinned = coffeeCorner.getAttribute('aria-pressed') === 'true';
+      coffeeCorner.setAttribute('aria-pressed', String(!isPinned));
     });
 
     coffeeCorner.addEventListener('keydown', (event) => {
       if (event.key === 'Escape') {
-        coffeeCorner.open = false;
-        coffeeSummary.focus();
+        coffeeCorner.setAttribute('aria-pressed', 'false');
+        coffeeCorner.blur();
       }
-    });
-
-    brewCoffee.addEventListener('click', () => {
-      document.querySelector('.coffee-scene').classList.add('brewed');
-      document.querySelector('.coffee-status').textContent = 'fresh coffee. stay a while.';
-      brewCoffee.textContent = 'On the house.';
-      brewCoffee.disabled = true;
     });
   </script>
 </body>
