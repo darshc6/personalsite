@@ -380,8 +380,14 @@
     @media (max-width: 40rem) {
       main { padding: 5rem 0 6rem; }
       h1 { font-size: clamp(4.5rem, 20vw, 8rem); }
-      footer { padding-bottom: 8rem; }
-      .coffee-corner { width: 10rem; }
+      .coffee-corner {
+        position: relative;
+        right: auto;
+        bottom: auto;
+        flex: 0 0 10rem;
+        width: 10rem;
+        margin: 6rem 0 0 auto;
+      }
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -432,8 +438,9 @@
       neon.style.setProperty('--shadow-x', `${-horizontal * 56}px`);
       neon.style.setProperty('--shadow-y', `${12 - vertical * 40}px`);
 
-      const centerX = coffeeCorner.offsetLeft + coffeeCorner.offsetWidth / 2;
-      const centerY = coffeeCorner.offsetTop + coffeeCorner.offsetHeight / 2;
+      const coffeeBounds = coffeeCorner.getBoundingClientRect();
+      const centerX = coffeeBounds.right - coffeeCorner.offsetWidth / 2;
+      const centerY = coffeeBounds.bottom - coffeeCorner.offsetHeight / 2;
       const distance = Math.hypot(event.clientX - centerX, event.clientY - centerY);
       const proximity = Math.max(0, 1 - distance / 450);
       const nearness = proximity * proximity;
