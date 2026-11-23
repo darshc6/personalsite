@@ -25,8 +25,8 @@
       grid-template-rows: auto 1fr auto;
       padding: clamp(1.5rem, 5vw, 4.5rem);
       background:
-        radial-gradient(ellipse at 48% 48%, #49213728, transparent 52%),
-        radial-gradient(ellipse at 80% 100%, #142e351f, transparent 45%),
+        radial-gradient(ellipse at 48% 48%, #65431824, transparent 52%),
+        radial-gradient(ellipse at 80% 100%, #1732541f, transparent 45%),
         #080a13;
     }
 
@@ -52,31 +52,54 @@
       font-style: italic;
       line-height: 1.1;
       letter-spacing: -0.035em;
-      color: #ffd8e5;
+      color: #ffe5ad;
       text-shadow:
-        0 0 2px #fff4f8,
-        0 0 7px #ff96bd,
-        0 0 18px #fc508c,
-        0 0 42px #ff327f80,
-        0 0 90px #ed266533;
+        0 0 2px #fff5dc,
+        0 0 7px #ffc163,
+        0 0 18px #f79b32,
+        0 0 42px #f68d2180,
+        0 0 90px #d9791833;
       transform: rotate(-5deg);
       transform-origin: left center;
     }
 
+    .neon {
+      display: block;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      color: inherit;
+      font: inherit;
+      letter-spacing: inherit;
+      text-shadow: inherit;
+      cursor: pointer;
+      transform: perspective(700px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
+      transition: transform 160ms ease-out, filter 180ms ease-out, color 180ms ease-out, text-shadow 180ms ease-out;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .neon:hover { filter: brightness(1.2); }
+    .neon:focus-visible { outline: 1px dashed #ffc163; outline-offset: 12px; }
+    .neon[aria-pressed="false"] {
+      color: #65523b;
+      text-shadow: 0 1px 1px #a0885c44;
+      filter: none;
+    }
+
     .hello {
       margin: 0 0 1.1rem;
-      color: #b8e8e3;
+      color: #b5cfe8;
       font-family: Georgia, 'Times New Roman', serif;
       font-size: clamp(1.5rem, 3vw, 2rem);
       font-style: italic;
       line-height: 1.4;
-      text-shadow: 0 0 12px #78cac13b;
+      text-shadow: 0 0 12px #729ec43b;
     }
 
     .aside {
       max-width: 36ch;
       margin: 0;
-      color: #b7a9aa;
+      color: #b5b2aa;
       font-size: 1rem;
       line-height: 1.8;
     }
@@ -86,18 +109,99 @@
       justify-content: space-between;
       flex-wrap: wrap;
       gap: 0.8rem 2rem;
-      color: #a79ca4;
+      color: #a5a5a0;
       font-size: 0.875rem;
       line-height: 1.5;
     }
 
     footer p { margin: 0; }
 
+    .coffee-corner { position: relative; margin-left: auto; }
+    .coffee-corner summary {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      width: fit-content;
+      padding: 0.5rem 0;
+      color: #c7baa1;
+      list-style: none;
+      cursor: pointer;
+    }
+    .coffee-corner summary::-webkit-details-marker { display: none; }
+    .coffee-corner summary:focus-visible { outline: 1px dashed #ffc163; outline-offset: 6px; }
+    .small-cup {
+      position: relative;
+      width: 1.25rem;
+      height: 1rem;
+      border: 1px solid #ffc163;
+      border-radius: 0 0 5px 5px;
+      box-shadow: 0 0 8px #f79b3230;
+    }
+    .small-cup::after {
+      content: '';
+      position: absolute;
+      width: 0.5rem;
+      height: 0.6rem;
+      top: 1px;
+      right: -0.5rem;
+      border: 1px solid #ffc163;
+      border-radius: 0 50% 50% 0;
+    }
+    .coffee-panel {
+      position: absolute;
+      right: 0;
+      bottom: calc(100% + 1rem);
+      z-index: 5;
+      width: min(25rem, calc(100vw - 3rem));
+      max-height: 75svh;
+      overflow: auto;
+      border: 1px solid #655d49;
+      background: #101a21;
+      box-shadow: 0 1rem 4rem #0009;
+    }
+    .coffee-panel-header { display: flex; justify-content: space-between; align-items: center; padding: 1rem 1.2rem; }
+    .coffee-panel h2 { margin: 0; font: italic 1.25rem Georgia, serif; color: #ede4d5; }
+    .coffee-close { border: 0; background: transparent; color: #b5b2aa; font: 1.5rem/1 monospace; cursor: pointer; padding: 0.25rem; }
+    .coffee-scene {
+      position: relative;
+      height: 13rem;
+      overflow: hidden;
+      background:
+        linear-gradient(#263d46 1px, transparent 1px),
+        linear-gradient(90deg, #263d46 1px, transparent 1px), #152a33;
+      background-size: 3rem 2rem;
+      border-block: 1px solid #38494c;
+    }
+    .cafe-sign { position: absolute; left: 8%; top: 12%; font: 1.2rem Georgia, serif; letter-spacing: 0.16em; color: #ffe5ad; text-shadow: 0 0 4px #ffc163, 0 0 15px #f79b3280; }
+    .machine { position: absolute; right: 9%; bottom: 30%; width: 39%; height: 43%; border: 3px solid #777d78; border-radius: 5px 5px 0 0; background: linear-gradient(90deg, #929a90, #b0b4a0 50%, #74847f); box-shadow: 4px 4px #0a161f; }
+    .machine::before { content: ''; position: absolute; inset: 9% 9% 42%; border: 1px solid #4a5753; background: #25362f; }
+    .machine::after { content: ''; position: absolute; width: 1.2rem; height: 1.2rem; right: 16%; top: 16%; border: 3px solid #bfc0a7; border-radius: 50%; background: linear-gradient(45deg, #e6dab8 45%, #383e31 46% 53%, #e6dab8 54%); }
+    .portafilter { position: absolute; left: 17%; top: 67%; width: 55%; height: 0.45rem; background: #23352e; box-shadow: 0 4px #66756d; }
+    .portafilter::before { content: ''; position: absolute; bottom: 100%; width: 35%; height: 0.7rem; background: #c2bfa5; }
+    .counter { position: absolute; inset: auto 0 23%; height: 10%; border-top: 4px solid #c69a5d; background: repeating-linear-gradient(0deg, #795136 0 3px, #6d472f 3px 5px); box-shadow: 0 4px 8px #0005; }
+    .cafe-floor { position: absolute; inset: 77% 0 0; background: conic-gradient(#b3ad8b 25%, #263e42 0 50%, #b3ad8b 0 75%, #263e42 0) 0 0 / 2.4rem 2.4rem; opacity: 0.5; }
+    .coffee-cup { position: absolute; left: 23%; bottom: 32%; width: 3.3rem; height: 2.5rem; border: 3px solid #e8d9b4; border-radius: 2px 2px 14px 14px; background: #b8b99d; box-shadow: inset -8px 0 #8b9c8f, 0 8px 0 -4px #d2c49d; }
+    .coffee-cup::after { content: ''; position: absolute; left: 100%; top: 2px; width: 1.2rem; height: 1.4rem; border: 4px solid #e8d9b4; border-radius: 0 60% 60% 0; }
+    .coffee-cup::before { content: ''; position: absolute; left: 2px; right: 2px; top: 0; height: 0.35rem; border-radius: 50%; background: #454e41; }
+    .steam { position: absolute; left: 22%; bottom: calc(100% + 8px); width: 0.55rem; height: 1.8rem; border-left: 2px solid #d1d9c2; border-radius: 50%; opacity: 0; transform: rotate(12deg); }
+    .steam::after { content: ''; position: absolute; left: 0.9rem; top: -0.3rem; width: 0.55rem; height: 1.8rem; border-left: 2px solid #d1d9c2; border-radius: 50%; }
+    .brewed .steam { opacity: 0.65; }
+    .brewed .coffee-cup::before { background: #6b3b1d; box-shadow: inset 0 1px #c79858; }
+    .coffee-controls { padding: 1.1rem 1.2rem; }
+    .brew { padding: 0.55rem 0.8rem; border: 1px solid #aa8758; background: #d1af78; color: #1c241e; font: bold 0.875rem 'Courier New', monospace; cursor: pointer; }
+    .brew:focus-visible, .coffee-close:focus-visible { outline: 2px solid #b5cfe8; outline-offset: 4px; }
+    .brew:disabled { background: #26382f; color: #c5d4bb; border-color: #506554; cursor: default; }
+    .coffee-status { margin: 0.75rem 0 0; min-height: 1.5em; font-size: 0.875rem; color: #b8b7aa; }
+
     @media (max-width: 40rem) {
       main { padding: 5rem 0 6rem; }
       h1 { font-size: clamp(4.5rem, 20vw, 8rem); }
       .aside { max-width: 28ch; }
-      footer { flex-direction: column; }
+      footer { align-items: flex-start; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .neon { transform: none; transition: none; }
     }
   </style>
 </head>
@@ -105,14 +209,79 @@
   <div class="page">
     <header>darsh chohan</header>
     <main>
-      <h1>oh, hey.</h1>
+      <h1><button class="neon" type="button" aria-pressed="true" aria-label="Neon hello, switch light off" title="Click to switch the neon on or off">oh, hey.</button></h1>
       <p class="hello">i’m darsh.</p>
-      <p class="aside">you found me.<br>i was trying to be mysterious.</p>
+      <p class="aside">you found me.<br>I like to build things that are nice.</p>
     </main>
     <footer>
       <p>more soon. probably.</p>
-      <p>darshchohan.com</p>
+      <details class="coffee-corner">
+        <summary><span class="small-cup" aria-hidden="true"></span>coffee corner</summary>
+        <section class="coffee-panel" aria-label="Coffee corner">
+          <div class="coffee-panel-header">
+            <h2>a little coffee break.</h2>
+            <button class="coffee-close" type="button" aria-label="Close coffee corner">×</button>
+          </div>
+          <div class="coffee-scene" aria-hidden="true">
+            <span class="cafe-sign">COFFEE</span>
+            <div class="machine"><span class="portafilter"></span></div>
+            <div class="cafe-floor"></div>
+            <div class="counter"></div>
+            <div class="coffee-cup"><span class="steam"></span></div>
+          </div>
+          <div class="coffee-controls">
+            <button class="brew" type="button">Brew a coffee</button>
+            <p class="coffee-status" role="status">pull up a stool.</p>
+          </div>
+        </section>
+      </details>
     </footer>
   </div>
+  <script>
+    const neon = document.querySelector('.neon');
+
+    neon.addEventListener('pointermove', (event) => {
+      const bounds = neon.getBoundingClientRect();
+      const horizontal = (event.clientX - bounds.left) / bounds.width - 0.5;
+      const vertical = (event.clientY - bounds.top) / bounds.height - 0.5;
+      neon.style.setProperty('--tilt-x', `${-vertical * 8}deg`);
+      neon.style.setProperty('--tilt-y', `${horizontal * 8}deg`);
+    });
+
+    neon.addEventListener('pointerleave', () => {
+      neon.style.removeProperty('--tilt-x');
+      neon.style.removeProperty('--tilt-y');
+    });
+
+    neon.addEventListener('click', () => {
+      const isOn = neon.getAttribute('aria-pressed') === 'true';
+      neon.setAttribute('aria-pressed', String(!isOn));
+      neon.setAttribute('aria-label', `Neon hello, switch light ${isOn ? 'on' : 'off'}`);
+    });
+
+    const coffeeCorner = document.querySelector('.coffee-corner');
+    const coffeeSummary = coffeeCorner.querySelector('summary');
+    const closeCoffee = document.querySelector('.coffee-close');
+    const brewCoffee = document.querySelector('.brew');
+
+    closeCoffee.addEventListener('click', () => {
+      coffeeCorner.open = false;
+      coffeeSummary.focus();
+    });
+
+    coffeeCorner.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') {
+        coffeeCorner.open = false;
+        coffeeSummary.focus();
+      }
+    });
+
+    brewCoffee.addEventListener('click', () => {
+      document.querySelector('.coffee-scene').classList.add('brewed');
+      document.querySelector('.coffee-status').textContent = 'fresh coffee. stay a while.';
+      brewCoffee.textContent = 'On the house.';
+      brewCoffee.disabled = true;
+    });
+  </script>
 </body>
 </html>
