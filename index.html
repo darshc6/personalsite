@@ -3,9 +3,9 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Oh, hey. I'm Darsh. You found my little corner of the internet.">
+  <meta name="description" content="oh, hey. i'm darsh. i like to build things that are nice.">
   <meta name="theme-color" content="#080a13">
-  <title>Oh, hey. — Darsh Chohan</title>
+  <title>darsh chohan</title>
   <style>
     :root {
       color-scheme: dark;
@@ -31,9 +31,42 @@
     }
 
     header {
-      font-size: 0.875rem;
-      letter-spacing: 0.12em;
-      color: #c9b7a7;
+      display: flex;
+      align-items: center;
+      gap: 0.9rem;
+      width: fit-content;
+      color: #dfcba6;
+    }
+
+    .brand-mark {
+      position: relative;
+      display: block;
+      width: 3.2rem;
+      height: 3.2rem;
+      border: 1px solid #bda27480;
+      border-radius: 50%;
+      color: #efd6a1;
+      font: italic 2.5rem/1 Georgia, 'Times New Roman', serif;
+      box-shadow: inset 0 0 0 4px #080a13, inset 0 0 0 5px #bda27424;
+    }
+
+    .brand-mark span {
+      position: absolute;
+      top: 0.05rem;
+      left: 0.42rem;
+      letter-spacing: -0.12em;
+    }
+
+    .brand-mark span:last-child {
+      top: 0.65rem;
+      left: 1.38rem;
+      font-size: 1.8rem;
+      color: #9bb7c9;
+    }
+
+    .brand-name {
+      font: 1.35rem/1.2 Georgia, 'Times New Roman', serif;
+      letter-spacing: -0.025em;
     }
 
     main {
@@ -403,15 +436,18 @@
 </head>
 <body>
   <div class="page">
-    <header>darsh chohan</header>
+    <header aria-label="darsh chohan">
+      <span class="brand-mark" aria-hidden="true"><span>d</span><span>c</span></span>
+      <span class="brand-name">darsh chohan</span>
+    </header>
     <main>
-      <h1><button class="neon" type="button" aria-pressed="true" aria-label="Neon hello, switch light off" title="Click to switch the neon on or off">oh, hey.</button></h1>
+      <h1><button class="neon" type="button" aria-pressed="true" aria-label="neon hello, switch light off" title="click to switch the neon on or off">oh, hey.</button></h1>
       <p class="hello">i’m darsh.</p>
-      <p class="aside">you found me.<br>I like to build things that are nice.</p>
+      <p class="aside">you found me.<br>i like to build things that are nice.</p>
     </main>
     <footer>
       <p>more soon. probably.</p>
-      <button class="coffee-corner" type="button" aria-label="Animate the coffee corner" aria-pressed="false">
+      <button class="coffee-corner" type="button" aria-label="animate the coffee corner" aria-pressed="false">
         <span class="coffee-scene" aria-hidden="true">
           <span class="cafe-lamp"></span>
           <span class="machine"><span class="portafilter"></span></span>
@@ -466,7 +502,7 @@
     neon.addEventListener('click', () => {
       const isOn = neon.getAttribute('aria-pressed') === 'true';
       neon.setAttribute('aria-pressed', String(!isOn));
-      neon.setAttribute('aria-label', `Neon hello, switch light ${isOn ? 'on' : 'off'}`);
+      neon.setAttribute('aria-label', `neon hello, switch light ${isOn ? 'on' : 'off'}`);
     });
 
     const coffeeCorner = document.querySelector('.coffee-corner');
